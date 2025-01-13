@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Encuesta de Satisfacción</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .question-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+        .question-text {
+            flex: 3;
+            padding-right: 20px;
+        }
+        .options {
+            flex: 2;
+            display: flex;
+            justify-content: space-between;
+        }
+        .options label {
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .options input[type="radio"] {
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .progress {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            margin: 0 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .likert-legend {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Encuesta de Satisfacción</h1>
+        
+        <div class="progress">
+            Página {{ page + 1 }} de {{ total_pages }}
+        </div>
+        
+        <div class="likert-legend">
+            1 = Totalmente en desacuerdo | 2 = En desacuerdo | 3 = Neutral | 4 = De acuerdo | 5 = Totalmente de acuerdo
+        </div>
+
+        <form action="/next" method="post">
+            <input type="hidden" name="current_page" value="{{ page }}">
+            
+            {% for question in current_questions %}
+            <div class="question-row">
+                <div class="question-text">{{ question }}</div>
+                <div class="options">
+                    <label>
+                        <input type="radio" name="q{{ page }}_{{ loop.index0 }}" value="1" required>
+                        1
+                    </label>
+                    <label>
+                        <input type="radio" name="q{{ page }}_{{ loop.index0 }}" value="2" required>
+                        2
+                    </label>
+                    <label>
+                        <input type="radio" name="q{{ page }}_{{ loop.index0 }}" value="3" required>
+                        3
+                    </label>
+                    <label>
+                        <input type="radio" name="q{{ page }}_{{ loop.index0 }}" value="4" required>
+                        4
+                    </label>
+                    <label>
+                        <input type="radio" name="q{{ page }}_{{ loop.index0 }}" value="5" required>
+                        5
+                    </label>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="button-container">
+                {% if page > 0 %}
+                <button type="submit" name="action" value="prev">← Anterior</button>
+                {% endif %}
+                
+                {% if not is_last_page %}
+                <button type="submit" name="action" value="next">Siguiente →</button>
+                {% else %}
+                <button type="submit" name="action" value="finish">Finalizar ✓</button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</body>
+</html>
